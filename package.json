@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node index"
+    "build": "babel app.js --out-file app-compiled.js",
+    "start": "nodemon --exec babel-node app.js"
   },
   "repository": {
     "type": "git",
@@ -20,8 +21,8 @@
   "homepage": "https://github.com/perchos/solucionesya-backend#readme",
   "dependencies": {
     "@babel/core": "^7.13.15",
+    "@babel/node": "^7.13.13",
     "@babel/preset-env": "^7.13.15",
-    "@babel/register": "^7.13.14",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.12.3"
