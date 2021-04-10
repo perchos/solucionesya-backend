@@ -1,0 +1,29 @@
+{
+  "name": "solucionesya-backend",
+  "version": "1.0.0",
+  "description": "Backend respository for solucionesya project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/perchos/solucionesya-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/perchos/solucionesya-backend/issues"
+  },
+  "homepage": "https://github.com/perchos/solucionesya-backend#readme",
+  "dependencies": {
+    "@babel/core": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/register": "^7.13.14",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.3"
+  }
+}
