@@ -25,8 +25,12 @@ const UserSchema = Schema(
       require: true,
       immutable: true,
     },
-    // "posts": ["ids"],
-    // "ratedPosts": ["ids"],
+    posts: {
+      type: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+    },
+    ratedPosts: {
+      type: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+    },
   },
   {
     collection: "users",
