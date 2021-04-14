@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import dbConnection from "./db/config";
-import User from "./models/user";
+import userRouting from "./routes/userRoutes";
 
 // Configure dotenv
 dotenv.config();
@@ -15,18 +15,22 @@ app.use(express.json());
 // Establish db connection
 dbConnection();
 
-app.get("*", (req, res) => {
-  res.send({ hello: "express" });
-});
+// Routing
 
-app.post("/", async (req, res) => {
-  const payload = req.body;
-  const user = new User(payload);
+userRouting(app);
 
-  await user.save();
+// app.get("*", (req, res) => {
+//   res.send({ hello: "express" });
+// });
 
-  res.send(user);
-});
+// app.post("/", async (req, res) => {
+//   const payload = req.body;
+//   const user = new User(payload);
+
+//   await user.save();
+
+//   res.send(user);
+// });
 
 app.listen(port, (err) => {
   if (err) console.log(err);
