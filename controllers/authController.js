@@ -1,13 +1,13 @@
 import User from "../models/user";
-import bcrypt from "bcrypt";
 import { hashPassword, isUserPassword } from "../utils/bcrypt";
 import { generateJWT } from "../utils/jwt";
+import { JWT_COOKIE_NAME } from "../utils/constants";
 
 class AuthController {
   static async registerUser(req, res) {
-    try {
-      const { email, userName, password } = req.body;
+    const { email, userName, password } = req.body;
 
+    try {
       let user;
 
       // Checks if user name is not taken
@@ -33,19 +33,65 @@ class AuthController {
 
       await user.save();
 
-      return res.send(user);
+      // JWT
+
+      const token = generateJWT(user.id, user.userName);
+
+      res.cookie(JWT_COOKIE_NAME, token, { httpOnly: true });
+
+      return res.status(201).send({
+        msg: "User created",
+        uid: user.id,
+      });
       //
     } catch (error) {
       res.status(500).send({ msg: "Error creating user" });
     }
   }
 
-  static loginUser(req, res) {
+  static async loginUser(req, res) {
+    const { userName, password } = req.body;
+
+    try {
+      const user = await User.findOne({ userName });
+
+      if (!user) {
+        return res.status(400).send({
+          msg: "Incorrect credentials",
+        });
+      }
+
+      const isValidPassword = await isUserPassword(password, user.password);
+
+      if (!isValidPassword) {
+        return res.status(400).send({
+          msg: "Incorrect credentials",
+        });
+      }
+
+      const token = generateJWT(user.id, user.userName);
+
+      res.cookie(JWT_COOKIE_NAME, token, { httpOnly: true });
+
+      return res.status(201).send({
+        msg: "Logged-in",
+        uid: user.id,
+      });
+
+      //
+    } catch (error) {
+      res.status(500).send({ msg: "Error login in" });
+    }
     res.status(200).send({ msg: "Hello There" });
   }
 
   static logoutUser(req, res) {
-    res.status(200).send({ msg: "Bye There" });
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    res.cookie(JWT_COOKIE_NAME, "", { expires: yesterday, httpOnly: true });
+
+    res.status(200).end();
   }
 }
 
