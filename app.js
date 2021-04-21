@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import dbConnection from "./db/config";
 import authRouting from "./routes/authRoutes";
+import mediaRouting from "./routes/mediaRoutes";
 
 // Configure dotenv
 dotenv.config();
@@ -23,12 +24,16 @@ app.use(
 
 app.use(express.json());
 
+// Make media available
+app.use("/uploads/images", express.static("uploads/images"));
+
 // Establish db connection
 dbConnection();
 
 // Routing
 
 authRouting(app);
+mediaRouting(app);
 
 app.get("/", (req, res) => {
   res.send({ status: "ok" });
