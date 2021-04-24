@@ -3,6 +3,12 @@ import { hashPassword, isUserPassword } from "../utils/bcrypt";
 import { generateJWT } from "../utils/jwt";
 import { JWT_COOKIE_NAME } from "../utils/constants";
 
+const cookieOptions = {
+  httpOnly: true,
+  sameSite: "none",
+  secure: true,
+};
+
 class AuthController {
   static async registerUser(req, res) {
     const { email, userName, password } = req.body;
@@ -37,7 +43,7 @@ class AuthController {
 
       const token = generateJWT(user.id, user.userName);
 
-      res.cookie(JWT_COOKIE_NAME, token, { httpOnly: true });
+      res.cookie(JWT_COOKIE_NAME, token, cookieOptions);
 
       return res.status(201).send({
         msg: "User created",
@@ -71,7 +77,7 @@ class AuthController {
 
       const token = generateJWT(user.id, user.userName);
 
-      res.cookie(JWT_COOKIE_NAME, token, { httpOnly: true });
+      res.cookie(JWT_COOKIE_NAME, token, cookieOptions);
 
       return res.status(201).send({
         msg: "Logged-in",
@@ -89,7 +95,10 @@ class AuthController {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
 
-    res.cookie(JWT_COOKIE_NAME, "", { expires: yesterday, httpOnly: true });
+    res.cookie(JWT_COOKIE_NAME, "", {
+      expires: yesterday,
+      ...cookieOptions,
+    });
 
     res.status(200).end();
   }
