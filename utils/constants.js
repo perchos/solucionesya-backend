@@ -1,9 +1,5 @@
 export const JWT_COOKIE_NAME = "token";
 
-// Route Prefixes
-
-export const AUTH_ROUTES_PREFIX = "/auth";
-
 // Media
 
 export const ACCEPTED_IMAGE_MIME_TYPES = [
