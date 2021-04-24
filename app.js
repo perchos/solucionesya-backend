@@ -34,11 +34,11 @@ app.use(express.json());
 app.use("/uploads/images", express.static("uploads/images"));
 
 // Establish db connection
-dbConnection().then(_ => app.emit('ready'));
+dbConnection().then((_) => app.emit("ready"));
 // TODO: REMEBER THAT THIS FUNCTION RETURN A PROMISE
 
 // Sheared Intances
-export const mongo = new DBAdapter()
+export const mongo = new DBAdapter();
 
 // Routing
 
@@ -47,14 +47,13 @@ mediaRouting(app);
 userRouting(app);
 postsRouting(app);
 
-
 app.get("/", (req, res) => {
   res.send({ status: "ok" });
 });
 
-app.on('ready', () => {
-    app.listen(port, (err) => {
-        if (err) console.log(err);
-        else console.log(`Server running on port http://localhost:${port}`);
-    });
-})
+app.on("ready", () => {
+  app.listen(port, (err) => {
+    if (err) console.log(err);
+    else console.log(`Server running on port http://localhost:${port}`);
+  });
+});
