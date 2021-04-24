@@ -4,6 +4,7 @@ import cors from "cors";
 import dbConnection from "./db/config";
 import authRouting from "./routes/authRoutes";
 import mediaRouting from "./routes/mediaRoutes";
+import cookieParser from "cookie-parser";
 
 // Configure dotenv
 dotenv.config();
@@ -16,11 +17,13 @@ app.use(
   cors({
     credentials: true,
     // origin: [],
-    origin: "*",
+    origin: ["http://localhost:3000", "http://186.84.20.195"],
     allowedHeaders: ["Content-Type"],
     methods: ["GET", "PUT", "POST", "DELETE"],
   })
 );
+
+app.use(cookieParser());
 
 app.use(express.json());
 
