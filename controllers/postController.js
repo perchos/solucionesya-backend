@@ -1,10 +1,12 @@
 import Post from "../models/post";
+import UserController from "../controllers/userController";
 import { mongo } from "../app";
 
 class PostController {
     constructor() {
     }
 
+    // THIS FUNTION IS TO CREATE FILTERS.
     // #formatJsonToSearch(tags, name) {
     //     let jsonFormat = {};
     //     if (tags.length > 0 && name) {
@@ -20,16 +22,20 @@ class PostController {
     // }
 
     static async getPosts(req, res) {
-        try {
-            const data = await mongo.find(Post)
+        let { limit, page } = req.query
+        let query;
+        if (limit === undefined) limit = 10;
+        if (page === undefined) page = 1;
+        query = {limit, page}
+        await mongo.paginate(Post, query).then(data => {
             res.status(200).json({
                 data: data,
             });
-        } catch(err) {
+        }).catch(err => {
             res.status(500).json({
                 data: err,
             });
-        }
+        })
     }
 
     static async getPostById(req, res) {
@@ -61,24 +67,18 @@ class PostController {
                 fileNames.push(file.path);
             });
         }
+
         const post = {
             ...pre_post,
             "images": fileNames,
         }
 
-        await mongo.save(Post, post)
-            .then(data => {
-                res.status(201).json({
-                    data: data,
-                    message: `This is the post that you create`
-                })
-            })
-            .catch(error => {
-                res.status(500).json({
-                    data: error,
-                    message: `Something went wrong creating the new post`
-                })
-            })
+        const postData = await mongo.save(Post, post)
+
+        res.status(201).json({
+            data: postData,
+            message: `This is the post that you create`
+        })
     }
 
     static async updatePost(req, res) {
