@@ -17,13 +17,13 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(
-  cors({
-    credentials: true,
-    // origin: [],
-    origin: ["http://localhost:3000", "http://186.84.20.195"],
-    allowedHeaders: ["Content-Type"],
-    methods: ["GET", "PUT", "POST", "DELETE"],
-  })
+    cors({
+        credentials: true,
+        // origin: [],
+        origin: ["http://localhost:3000", "http://186.84.20.195"],
+        allowedHeaders: ["Content-Type"],
+        methods: ["GET", "PUT", "POST", "DELETE"],
+    })
 );
 
 app.use(cookieParser());
@@ -48,12 +48,12 @@ userRouting(app);
 postsRouting(app);
 
 app.get("/", (req, res) => {
-  res.send({ status: "ok" });
+    res.send({ status: "ok" });
 });
 
 app.on("ready", () => {
-  app.listen(port, (err) => {
-    if (err) console.log(err);
-    else console.log(`Server running on port http://localhost:${port}`);
-  });
+    app.listen(port, (err) => {
+        if (err) console.log(err);
+        else console.log(`Server running on port http://localhost:${port}`);
+    });
 });
