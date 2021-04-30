@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const PostSchema = Schema(
   {
@@ -23,6 +24,7 @@ const PostSchema = Schema(
       require: true,
     },
     images: Array,
+    authorId: Schema.Types.ObjectId,
     ratings: {
       type: [{ type: Schema.Types.ObjectId, ref: "Rating" }],
     },
@@ -32,6 +34,8 @@ const PostSchema = Schema(
     timestamps: true,
   }
 );
+
+PostSchema.plugin(mongoosePaginate)
 
 const Post = model("Post", PostSchema);
 

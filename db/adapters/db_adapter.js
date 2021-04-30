@@ -2,6 +2,15 @@
 class DBAdapter {
     constructor() {
     }
+    // For now is just allow for posts
+    paginate(module, query) {
+        return new Promise((resolve, reject) => {
+            module.paginate({}, query, (err, document) => {
+                if (err) reject(err);
+                resolve(document);
+            })
+        });
+    }
 
     find(module) {
         return new Promise((resolve, reject) => {
@@ -30,18 +39,18 @@ class DBAdapter {
         })
     }
 
-    join(module, childModule, moduleField, childField) {
+    join(module, moduleField, childModuleName, childField) {
         return new Promise((resolve, reject) => {
             module.aggregate(
-                {
+                [{
                     $lookup:
                         {
-                            from: childModule,
+                            from: childModuleName,
                             localField: moduleField,
                             foreignField: childField,
-                            as: ``
+                            as: `${module}_${childModuleName}`
                         }
-                    },
+                    }],
                 (err, document) => {
                     if (err) reject(err);
                     resolve(document);
