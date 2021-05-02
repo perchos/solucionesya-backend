@@ -19,6 +19,10 @@ const PostSchema = Schema(
       type: String,
       require: true,
     },
+    category: {
+        type: String,
+        require: true,
+    },
     desc: {
       type: String,
       require: true,

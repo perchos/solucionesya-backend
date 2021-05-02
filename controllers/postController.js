@@ -22,12 +22,19 @@ class PostController {
     // }
 
     static async getPosts(req, res) {
-        let { limit, page } = req.query
-        let query;
+        let { limit, page, category } = req.query
+        let paginateQuery;
+        let searchQuery;
         if (limit === undefined) limit = 10;
         if (page === undefined) page = 1;
-        query = {limit, page}
-        await mongo.paginate(Post, query).then(data => {
+        paginateQuery = {limit, page}
+
+        if (category === undefined) {
+            searchQuery = {}
+        } else {
+            searchQuery = {"category": {$in: category}}
+        }
+        await mongo.paginate(Post, searchQuery, paginateQuery).then(data => {
             res.status(200).json({
                 data: data,
             });

@@ -3,9 +3,9 @@ class DBAdapter {
     constructor() {
     }
     // For now is just allow for posts
-    paginate(module, query) {
+    paginate(module, searchQuery, paginateQuery) {
         return new Promise((resolve, reject) => {
-            module.paginate({}, query, (err, document) => {
+            module.paginate(searchQuery, paginateQuery, (err, document) => {
                 if (err) reject(err);
                 resolve(document);
             })
