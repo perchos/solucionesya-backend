@@ -12,7 +12,6 @@ class PostController {
     if (page === undefined) page = 1;
     paginateQuery = { limit, page };
 
-    // TODO: THIS IFS MUST BE IN A HELPER METHOD
     if (category !== undefined && category.length) {
       searchQuery = { category: { $in: category } };
     }

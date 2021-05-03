@@ -1,5 +1,6 @@
 import User from "../models/user";
 import { mongo } from "../app";
+import mongoose from "mongoose";
 
 class UserController {
   static async getUser(req, res) {
@@ -18,9 +19,10 @@ class UserController {
 
   static async getUserWithPosts(req, res) {
     const userId = req.params.userId;
+    const id = mongoose.Types.ObjectId(userId)
+    const filterQuery = {_id: id}
 
-      // Filter by user Id
-    await mongo.join(User, "_id", "posts", "authorId")
+    await mongo.join(User, "_id", "posts", "authorId", filterQuery)
         .then(data => {
           res.status(200).json({
             data: data,
