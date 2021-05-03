@@ -39,18 +39,21 @@ class DBAdapter {
         })
     }
 
-    join(module, moduleField, childModuleName, childField) {
+    join(module, moduleField, childModuleName, childField, filterQuery) {
         return new Promise((resolve, reject) => {
             module.aggregate(
-                [{
-                    $lookup:
-                        {
-                            from: childModuleName,
-                            localField: moduleField,
-                            foreignField: childField,
-                            as: `${childModuleName}`
-                        }
-                    }],
+                [
+                    {$match: filterQuery},
+                    {
+                        $lookup:
+                            {
+                                from: childModuleName,
+                                localField: moduleField,
+                                foreignField: childField,
+                                as: `${childModuleName}`
+                            }
+                    }
+                ],
                 (err, document) => {
                     if (err) reject(err);
                     resolve(document);
