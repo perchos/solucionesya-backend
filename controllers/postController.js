@@ -1,39 +1,37 @@
 import Post from "../models/post";
-import UserController from "../controllers/userController";
 import { mongo } from "../app";
 
 class PostController {
     constructor() {
     }
 
-    // THIS FUNTION IS TO CREATE FILTERS.
-    // #formatJsonToSearch(tags, name) {
-    //     let jsonFormat = {};
-    //     if (tags.length > 0 && name) {
-    //         jsonFormat = {'tags': {$in: tags}, 'name': {$regex: '.*' + name + '.*'}};
-    //     } else if (tags.length > 0 && !name) {
-    //         jsonFormat = {'tags': {$in: tags}};
-    //     } else if (tags.length === 0 && name) {
-    //         jsonFormat = {'name': {$regex: '.*' + name + '.*'}}
-    //     } else {
-    //         jsonFormat = undefined;
-    //     }
-    //     return jsonFormat;
-    // }
-
     static async getPosts(req, res) {
-        let { limit, page, category } = req.query
+        let { limit, page, category, location ,offset } = req.query
         let paginateQuery;
-        let searchQuery;
+        let searchQuery = {};
         if (limit === undefined) limit = 10;
         if (page === undefined) page = 1;
         paginateQuery = {limit, page}
 
-        if (category === undefined) {
-            searchQuery = {}
-        } else {
-            searchQuery = {"category": {$in: category}}
+        // TODO: THIS IFS MUST BE IN A HELPER METHOD
+        if (category !== undefined) {
+            searchQuery = {'category': {$in: category}}
         }
+
+        if (location !== undefined) {
+            searchQuery = {
+                ...searchQuery,
+                'location': {$in: location}
+            }
+        }
+
+        if (offset !== undefined) {
+            searchQuery = {
+                ...searchQuery,
+                $or: [{'desc': {$regex: '.*' + offset + '.*'}}, {'title': {$regex: '.*' + offset + '.*'}}]
+            }
+        }
+
         await mongo.paginate(Post, searchQuery, paginateQuery).then(data => {
             res.status(200).json({
                 data: data,
