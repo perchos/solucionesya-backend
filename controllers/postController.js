@@ -10,7 +10,7 @@ class PostController {
     let searchQuery = {};
     if (limit === undefined) limit = 10;
     if (page === undefined) page = 1;
-    paginateQuery = { limit, page };
+    paginateQuery = { limit, page, sort: { createdAt: 'desc' } };
 
     if (category !== undefined && category.length) {
       searchQuery = { category: { $in: category } };
@@ -33,8 +33,7 @@ class PostController {
       };
     }
 
-    await mongo
-      .paginate(Post, searchQuery, paginateQuery)
+    await mongo.paginate(Post, searchQuery, paginateQuery)
       .then((data) => {
         res.status(200).json({
           data: data,
