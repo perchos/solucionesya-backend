@@ -6,7 +6,7 @@ class UserController {
   static async getUser(req, res) {
     const { userId } = req.params;
     try {
-      const data = await mongo.findById(User, userId);
+      const data = await mongo.findById(User, userId, {password: 0});
       res.status(200).json({
         data: data,
       });
