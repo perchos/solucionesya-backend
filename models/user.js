@@ -25,8 +25,6 @@ const UserSchema = Schema(
       require: true,
       immutable: true,
     },
-    // "posts": ["ids"],
-    // "ratedPosts": ["ids"],
   },
   {
     collection: "users",
