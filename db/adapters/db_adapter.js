@@ -21,12 +21,12 @@ class DBAdapter {
         });
     }
 
-    findById(module, elementId) {
+    findById(module, elementId, option) {
         return new Promise((resolve, reject) => {
-            module.findById(elementId, (err, document) => {
+            module.findById(elementId, option, (err, document) => {
                 if (err) reject(err);
                 resolve(document);
-            })
+            });
         });
     }
 

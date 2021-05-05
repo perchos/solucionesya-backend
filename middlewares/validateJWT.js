@@ -16,7 +16,6 @@ const validateJWT = (req, res, next) => {
     req.uid = payload.uid;
     req.name = payload.name;
   } catch (error) {
-    console.log(error);
     return res.status(401).json({
       success: false,
       msg: "invalid token",
