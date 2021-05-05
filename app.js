@@ -8,6 +8,7 @@ import authRouting from "./routes/authRoutes";
 import mediaRouting from "./routes/imageRoutes";
 import DBAdapter from "./db/adapters/db_adapter";
 import cookieParser from "cookie-parser";
+import { version } from "./settings";
 
 // Configure dotenv
 dotenv.config();
@@ -48,7 +49,7 @@ userRouting(app);
 postsRouting(app);
 
 app.get("/", (req, res) => {
-    res.send({ status: "ok" });
+    res.send({ status: "ok", version: `${version}` });
 });
 
 app.on("ready", () => {
