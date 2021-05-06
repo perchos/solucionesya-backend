@@ -44,7 +44,7 @@ into of directory execute `npm install` for install all dependencies
 ### 1. Add your mongo atlas credentials in the .env.example file
 ### 2. Execute the next commands to run the server
 ```[bash]
-export $(cat .env.example | grep -v ^# | xargs)
+export $(cat .env | grep -v ^# | xargs)
 npm run
 ```
 
