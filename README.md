@@ -45,7 +45,7 @@ into of directory execute `npm install` for install all dependencies
 ### 2. Execute the next commands to run the server
 ```[bash]
 export $(cat .env | grep -v ^# | xargs)
-npm run
+npm run dev
 ```
 
 # Authors
